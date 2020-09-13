@@ -1,6 +1,7 @@
 import 'package:bmi_diary/calculator/calculator_page.dart';
 import 'package:bmi_diary/database/database.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
+import 'package:bmi_diary/utils/constants/colors.dart';
 import 'package:bmi_diary/utils/localedelegate.dart';
 import 'package:bmi_diary/utils/router.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         depth: 10,
       ),
       darkTheme: NeumorphicThemeData(
-        baseColor: Color(0xFF3E3E3E),
+        baseColor: color_bg,
+        intensity: 0.3,
         lightSource: LightSource.topLeft,
         depth: 6,
       ),

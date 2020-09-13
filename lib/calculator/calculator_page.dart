@@ -15,206 +15,230 @@ class CalculatorPage extends StatelessWidget {
     return ViewModelBuilder<CalculatorViewModel>.reactive(
         viewModelBuilder: () => CalculatorViewModel(),
         builder: (context, model, child) => Scaffold(
+              resizeToAvoidBottomInset: false,
               backgroundColor: color_bg,
               appBar: CalculatorAppBar(
                 title: "Calculator",
                 btnText: "DIARY",
                 onPressed: () {},
               ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 42,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Flexible(
-                              flex: 1,
-                              child: NeuButton(
-                                onPressed: () {
-                                  model.selectGender(0);
-                                },
-                                text: "Male",
-                                icon: Icons.accessible_forward,
-                                depth: model.selectedGenderIndex == 0 ? 6 : -20,
-                                btnColor: model.selectedGenderIndex == 0
-                                    ? color_btn_able
-                                    : color_btn_disable,
-                                txtColor: model.selectedGenderIndex == 0
-                                    ? Colors.white
-                                    : color_txt_disable,
-                              )),
-                          Flexible(
-                              flex: 1,
-                              child: NeuButton(
-                                onPressed: () {
-                                  model.selectGender(1);
-                                },
-                                text: "Female",
-                                icon: Icons.accessibility_new,
-                                depth: model.selectedGenderIndex == 1 ? 6 : -20,
-                                btnColor: model.selectedGenderIndex == 1
-                                    ? color_btn_able
-                                    : color_btn_disable,
-                                txtColor: model.selectedGenderIndex == 1
-                                    ? Colors.white
-                                    : color_txt_disable,
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                              flex: 1,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 42),
-                                child: NeumorphicToggle(
-                                    height: 25,
-                                    style: NeumorphicToggleStyle(
-                                        backgroundColor: color_btn_disable,
-                                        depth: 6),
-                                    children: [
-                                      buildToggleElement("cm"),
-                                      buildToggleElement("ft"),
-                                    ],
-                                    thumb: Neumorphic(
-                                      style: NeumorphicStyle(
-                                          color: color_btn_able,
-                                          intensity: 0.3,
-                                          depth: 6),
-                                    )),
-                              )),
-                          Flexible(
-                            child: BuildChooser(
-                              onPressedRight: model.onAddHeight,
-                              onPressedLeft: model.onSubtractHeight,
-                              textEditingController:
-                                  model.heightEditingController,
-                            ),
-                            flex: 1,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                              flex: 1,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 42),
-                                child: NeumorphicToggle(
-                                    height: 25,
-                                    style: NeumorphicToggleStyle(
-                                        backgroundColor: color_btn_disable,
-                                        depth: 6),
-                                    children: [
-                                      buildToggleElement("kg"),
-                                      buildToggleElement("lbs"),
-                                    ],
-                                    thumb: Neumorphic(
-                                      style: NeumorphicStyle(
-                                          color: color_btn_able,
-                                          intensity: 0.3,
-                                          depth: 6),
-                                    )),
-                              )),
-                          Flexible(
-                            child: BuildChooser(
-                              onPressedRight: model.onAddWeight,
-                              onPressedLeft: model.onSubtractWeight,
-                              textEditingController:
-                                  model.weightEditingController,
-                            ),
-                            flex: 1,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                              flex: 1,
-                              child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
+              body: GestureDetector(
+                onTap: () {
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus) {
+                    currentFocus.unfocus();
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 42,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Flexible(
+                                flex: 1,
+                                child: NeuButton(
+                                  onPressed: () {
+                                    model.selectGender(0);
+                                  },
+                                  text: "Male",
+                                  icon: Icons.accessible_forward,
+                                  depth:
+                                      model.selectedGenderIndex == 0 ? 6 : -20,
+                                  btnColor: model.selectedGenderIndex == 0
+                                      ? color_btn_able
+                                      : color_btn_disable,
+                                  txtColor: model.selectedGenderIndex == 0
+                                      ? Colors.white
+                                      : color_txt_disable,
+                                )),
+                            Flexible(
+                                flex: 1,
+                                child: NeuButton(
+                                  onPressed: () {
+                                    model.selectGender(1);
+                                  },
+                                  text: "Female",
+                                  icon: Icons.accessibility_new,
+                                  depth:
+                                      model.selectedGenderIndex == 1 ? 6 : -20,
+                                  btnColor: model.selectedGenderIndex == 1
+                                      ? color_btn_able
+                                      : color_btn_disable,
+                                  txtColor: model.selectedGenderIndex == 1
+                                      ? Colors.white
+                                      : color_txt_disable,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: Container(
                                   margin: EdgeInsets.symmetric(horizontal: 42),
-                                  child: Text(
-                                    "goal",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ))),
-                          Flexible(
-                            child: BuildChooser(
-                              onPressedRight: model.onAddGoal,
-                              onPressedLeft: model.onSubtractGoal,
-                              textEditingController:
-                                  model.goalEditingController,
-                            ),
-                            flex: 1,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
+                                  child: NeumorphicToggle(
+                                      height: 25,
+                                      selectedIndex: model.selectedCmOrFt,
+                                      onChanged: model.selectCMorFT,
+                                      style: NeumorphicToggleStyle(
+                                          backgroundColor: color_btn_disable,
+                                          depth: 6),
+                                      children: [
+                                        buildToggleElement("cm"),
+                                        buildToggleElement("ft"),
+                                      ],
+                                      thumb: Neumorphic(
+                                        style: NeumorphicStyle(
+                                            color: color_btn_able,
+                                            intensity: 0.3,
+                                            depth: 6),
+                                      )),
+                                )),
+                            Flexible(
+                              child: BuildChooser(
+                                onPressedRight: model.onAddHeight,
+                                onPressedLeft: model.onSubtractHeight,
+                                textEditingController:
+                                    model.heightEditingController,
+                              ),
                               flex: 1,
-                              child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: Container(
                                   margin: EdgeInsets.symmetric(horizontal: 42),
-                                  child: Text(
-                                    "age",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ))),
-                          Flexible(
-                            child: BuildChooser(
-                              onPressedRight: model.onAddAge,
-                              onPressedLeft: model.onSubtractAge,
-                              textEditingController: model.ageEditingController,
-                            ),
-                            flex: 1,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  NeumorphicButton(
-                    onPressed: () {},
-                    margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),
-                    style: NeumorphicStyle(
-                        color: color_orange,
-                        depth: 6,
-                        intensity: 0.3,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(12))),
-                    child: Container(
-                      height: 24,
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      child: Text(
-                        "CALCULATE",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                                  child: NeumorphicToggle(
+                                      height: 25,
+                                      selectedIndex: model.selectedKgOrLbs,
+                                      onChanged: model.selectKgorLbs,
+                                      style: NeumorphicToggleStyle(
+                                          backgroundColor: color_btn_disable,
+                                          depth: 6),
+                                      children: [
+                                        buildToggleElement("kg"),
+                                        buildToggleElement("lbs"),
+                                      ],
+                                      thumb: Neumorphic(
+                                        style: NeumorphicStyle(
+                                            color: color_btn_able,
+                                            intensity: 0.3,
+                                            depth: 6),
+                                      )),
+                                )),
+                            Flexible(
+                              child: BuildChooser(
+                                onPressedRight: model.onAddWeight,
+                                onPressedLeft: model.onSubtractWeight,
+                                textEditingController:
+                                    model.weightEditingController,
+                              ),
+                              flex: 1,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: Container(
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 42),
+                                    child: Text(
+                                      "goal",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ))),
+                            Flexible(
+                              child: BuildChooser(
+                                onPressedRight: model.onAddGoal,
+                                onPressedLeft: model.onSubtractGoal,
+                                textEditingController:
+                                    model.goalEditingController,
+                              ),
+                              flex: 1,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: Container(
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 42),
+                                    child: Text(
+                                      "age",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ))),
+                            Flexible(
+                              child: BuildChooser(
+                                onPressedRight: model.onAddAge,
+                                onPressedLeft: model.onSubtractAge,
+                                textEditingController:
+                                    model.ageEditingController,
+                              ),
+                              flex: 1,
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                    NeumorphicButton(
+                      onPressed: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                        model.onCalculatePress();
+                      },
+                      margin: EdgeInsets.only(left: 16, right: 16, bottom: 32),
+                      style: NeumorphicStyle(
+                          color: color_orange,
+                          depth: 6,
+                          intensity: 0.3,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                              BorderRadius.circular(12))),
+                      child: Container(
+                        height: 24,
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        child: Text(
+                          "CALCULATE",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ));
   }

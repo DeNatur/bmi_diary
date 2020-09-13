@@ -1,7 +1,14 @@
+import 'package:bmi_diary/result/result_page.dart';
+import 'package:bmi_diary/utils/constants/route_names.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case ResultViewRoute:
+      return _getPageRouteWithArgs(
+          routeName: settings.name,
+          viewToShow: ResultPage(),
+          arguments: settings.arguments);
     default:
       return MaterialPageRoute(
           builder: (_) => Scaffold(
