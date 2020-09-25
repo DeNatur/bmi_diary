@@ -287,38 +287,56 @@ class _BuildChooserState extends State<BuildChooser> {
       children: [
         Stack(
           children: [
+            NeumorphicButton(
+              onPressed: () {},
+              margin: EdgeInsets.all(3),
+              style: NeumorphicStyle(
+                boxShape: NeumorphicBoxShape.circle(),
+                color: color_btn_able,
+                depth: isLeftPressed ? -20 : 6,
+                intensity: 0.3,
+                shape: NeumorphicShape.convex,
+              ),
+              child: Container(
+                height: isLeftPressed ? 8 : 10,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 13, top: 10),
+              child: Icon(
+                Icons.remove,
+                size: 16,
+                color: color_bg,
+              ),
+            ),
             GestureDetector(
               onTapDown: (TapDownDetails details) {
+                widget.onPressedLeft();
+                isLeftPressed = true;
+                setState(() {});
                 timerLeft = Timer.periodic(Duration(milliseconds: 100), (t) {
                   widget.onPressedLeft();
                 });
               },
               onTapUp: (TapUpDetails details) {
                 timerLeft.cancel();
+                setState(() {
+                  isLeftPressed = false;
+                });
               },
               onTapCancel: () {
                 timerLeft.cancel();
+                setState(() {
+                  isLeftPressed = false;
+                });
               },
-              child: NeumorphicButton(
-                onPressed: widget.onPressedLeft,
-                margin: EdgeInsets.all(3),
-                style: NeumorphicStyle(
-                  boxShape: NeumorphicBoxShape.circle(),
-                  color: color_btn_able,
-                  depth: 6,
-                  intensity: 0.3,
-                  shape: NeumorphicShape.convex,
-                ),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                color: Colors.transparent,
+                width: 40,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 15, top: 7),
-              child: Icon(
-                Icons.remove,
-                size: 12,
-                color: color_bg,
-              ),
-            )
           ],
         ),
         Container(
@@ -328,41 +346,57 @@ class _BuildChooserState extends State<BuildChooser> {
             textEditingController: widget.textEditingController,
           ),
         ),
-        GestureDetector(
-          onTapDown: (TapDownDetails details) {
-            timerRight = Timer.periodic(Duration(milliseconds: 100), (t) {
-              widget.onPressedRight();
-            });
-          },
-          onTapUp: (TapUpDetails details) {
-            timerRight.cancel();
-          },
-          onTapCancel: () {
-            timerRight.cancel();
-          },
-          child: Stack(
-            children: [
-              NeumorphicButton(
-                onPressed: widget.onPressedRight,
-                margin: EdgeInsets.all(3),
-                style: NeumorphicStyle(
-                  boxShape: NeumorphicBoxShape.circle(),
-                  color: color_btn_able,
-                  depth: 6,
-                  intensity: 0.3,
-                  shape: NeumorphicShape.convex,
-                ),
+        Stack(
+          children: [
+            NeumorphicButton(
+              onPressed: widget.onPressedRight,
+              margin: EdgeInsets.all(3),
+              style: NeumorphicStyle(
+                boxShape: NeumorphicBoxShape.circle(),
+                color: color_btn_able,
+                depth: isRightPressed ? -20 : 6,
+                intensity: 0.3,
+                shape: NeumorphicShape.convex,
               ),
-              Container(
-                margin: EdgeInsets.only(left: 15, top: 7),
-                child: Icon(
-                  Icons.add,
-                  size: 12,
-                  color: color_bg,
-                ),
-              )
-            ],
-          ),
+              child: Container(
+                height: isRightPressed ? 8 : 10,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 13, top: 10),
+              child: Icon(
+                Icons.add,
+                size: 16,
+                color: color_bg,
+              ),
+            ),
+            GestureDetector(
+              onTapDown: (TapDownDetails details) {
+                widget.onPressedRight();
+                isRightPressed = true;
+                setState(() {});
+                timerRight = Timer.periodic(Duration(milliseconds: 100), (t) {
+                  widget.onPressedRight();
+                });
+              },
+              onTapUp: (TapUpDetails details) {
+                isRightPressed = false;
+                setState(() {});
+                timerRight.cancel();
+              },
+              onTapCancel: () {
+                isRightPressed = false;
+                setState(() {});
+                timerRight.cancel();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                color: Colors.transparent,
+                width: 40,
+              ),
+            )
+          ],
         ),
       ],
     );
@@ -419,6 +453,7 @@ class NeuButton extends StatelessWidget {
     return NeumorphicButton(
       margin: EdgeInsets.all(16),
       onPressed: onPressed,
+      provideHapticFeedback: false,
       style: NeumorphicStyle(
         shape: NeumorphicShape.convex,
         boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),

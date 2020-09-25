@@ -1,3 +1,4 @@
+import 'package:bmi_diary/diary/diary_page.dart';
 import 'package:bmi_diary/result/result_page.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -8,6 +9,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRouteWithArgs(
           routeName: settings.name,
           viewToShow: ResultPage(),
+          arguments: settings.arguments);
+    case DiaryViewRoute:
+      return _getPageRouteWithArgs(
+          routeName: settings.name,
+          viewToShow: DiaryPage(),
           arguments: settings.arguments);
     default:
       return MaterialPageRoute(

@@ -11,10 +11,17 @@ class DatabaseManager {
 
   DatabaseManager({this.databaseProvider});
 
-  Future<BMI> deleteUser(BMI bmi) async {
+  Future<BMI> deleteBMI(BMI bmi) async {
     final db = await databaseProvider.db();
     await db.delete(bmiDao.tableName,
         where: bmiDao.columnId + " = ?", whereArgs: [bmi.id]);
+    return bmi;
+  }
+
+  Future<BMI> insertBMI(BMI bmi) async {
+    final db = await databaseProvider.db();
+    int id = await db.insert(bmiDao.tableName, bmiDao.toMap(bmi));
+    bmi.id = id;
     return bmi;
   }
 

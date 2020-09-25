@@ -5,10 +5,14 @@ import 'package:bmi_diary/main.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rect_getter/rect_getter.dart';
 import 'package:stacked/stacked.dart';
 
 class CalculatorViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
+  Rect rect;
+  GlobalKey rectGetterKey = RectGetter.createGlobalKey();
+
   int selectedGenderIndex = 0;
   int selectedCmOrFt = 0;
   int selectedKgOrLbs = 0;
@@ -21,6 +25,7 @@ class CalculatorViewModel extends BaseViewModel {
   TextEditingController ageEditingController =
       TextEditingController(text: "18");
 
+  CalculatorViewModel({this.rectGetterKey});
   void selectCMorFT(int i) {
     selectedCmOrFt = i;
     notifyListeners();
