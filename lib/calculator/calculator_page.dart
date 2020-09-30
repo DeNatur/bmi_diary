@@ -20,7 +20,7 @@ class CalculatorPage extends StatelessWidget {
               appBar: CalculatorAppBar(
                 title: "Calculator",
                 btnText: "DIARY",
-                onPressed: () {},
+                onPressed: model.goToDiaryPage,
               ),
               body: GestureDetector(
                 onTap: () {

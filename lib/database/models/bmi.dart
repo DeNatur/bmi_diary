@@ -14,6 +14,7 @@ class BMI {
   static const int OBESITY_II = 6;
 
   int id;
+  int time;
   int gender;
   double height;
   double weight;
@@ -28,6 +29,7 @@ class BMI {
       this.height,
       this.gender,
       this.weight,
+      this.time,
       this.goal,
       this.age,
       this.result});

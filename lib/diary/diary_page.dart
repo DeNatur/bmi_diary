@@ -9,7 +9,8 @@ class DiaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DiaryViewModel>.reactive(
-        viewModelBuilder: () => DiaryViewModel(),
+        viewModelBuilder: () =>
+            DiaryViewModel(bmiList: ModalRoute.of(context).settings.arguments),
         builder: (context, model, child) => Scaffold(
               appBar: NeumorphicAppBar(
                 title: Row(
@@ -50,12 +51,21 @@ class DiaryPage extends StatelessWidget {
               ),
               body: ListView(
                 physics: BouncingScrollPhysics(),
-                children: [LineChart(sampleData1())],
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: LineChart(sampleData1(model)),
+                  )
+                ],
               ),
             ));
   }
 
-  LineChartData sampleData1() {
+  LineChartData sampleData1(DiaryViewModel model) {
+    List<FlSpot> flSpots = model.getListOfWeightBarDataBeforTime();
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
@@ -78,15 +88,7 @@ class DiaryPage extends StatelessWidget {
           ),
           margin: 10,
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'SEPT';
-              case 7:
-                return 'OCT';
-              case 12:
-                return 'DEC';
-            }
-            return '';
+            return model.getFormattedValue(value.toInt());
           },
         ),
         leftTitles: SideTitles(
@@ -97,17 +99,9 @@ class DiaryPage extends StatelessWidget {
             fontSize: 14,
           ),
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '1m';
-              case 2:
-                return '2m';
-              case 3:
-                return '3m';
-              case 4:
-                return '5m';
+            if (value.toInt() % 20 == 0) {
+              return value.toString();
             }
-            return '';
           },
           margin: 8,
           reservedSize: 30,
@@ -131,25 +125,24 @@ class DiaryPage extends StatelessWidget {
           ),
         ),
       ),
-      minX: 0,
-      maxX: 14,
-      maxY: 4,
+      minX: 1,
+      maxX: model.timeType == TimeType.Week
+          ? 7
+          : model.timeType == TimeType.Month ? 30 : 365,
+      maxY: model.getHighestValue() + 20,
       minY: 0,
-      lineBarsData: linesBarData1(),
+      lineBarsData: linesBarData1(model, flSpots),
     );
   }
 
-  List<LineChartBarData> linesBarData1() {
-    final LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 2.2),
-        FlSpot(13, 1.8),
-      ],
+  List<LineChartBarData> linesBarData1(
+      DiaryViewModel model, List<FlSpot> flSpots) {
+    final LineChartBarData weightBarData = LineChartBarData(
+      spots: flSpots.isEmpty
+          ? [
+              FlSpot(1, 0),
+            ]
+          : flSpots,
       isCurved: true,
       colors: [
         const Color(0xff4af699),
@@ -157,59 +150,34 @@ class DiaryPage extends StatelessWidget {
       barWidth: 8,
       isStrokeCapRound: true,
       dotData: FlDotData(
-        show: false,
+        show: true,
       ),
       belowBarData: BarAreaData(
         show: false,
       ),
     );
-    final LineChartBarData lineChartBarData2 = LineChartBarData(
+    final LineChartBarData desiredWeightBarData = LineChartBarData(
       spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 2.8),
-        FlSpot(7, 1.2),
-        FlSpot(10, 2.8),
-        FlSpot(12, 2.6),
-        FlSpot(13, 3.9),
+        FlSpot(1, model.getLastDesiredWeight()),
+        FlSpot(
+            model.timeType == TimeType.Week
+                ? 7
+                : model.timeType == TimeType.Month ? 30 : 365,
+            model.getLastDesiredWeight())
       ],
       isCurved: true,
       colors: [
-        const Color(0xffaa4cfc),
+        color_orange,
       ],
-      barWidth: 8,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(show: false, colors: [
-        const Color(0x00aa4cfc),
-      ]),
-    );
-    final LineChartBarData lineChartBarData3 = LineChartBarData(
-      spots: [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
-      ],
-      isCurved: true,
-      colors: const [
-        Color(0xff27b6fc),
-      ],
-      barWidth: 8,
+      barWidth: 2,
       isStrokeCapRound: true,
       dotData: FlDotData(
         show: false,
       ),
       belowBarData: BarAreaData(
-        show: false,
+        show: true,
       ),
     );
-    return [
-      lineChartBarData1,
-      lineChartBarData2,
-      lineChartBarData3,
-    ];
+    return [weightBarData, desiredWeightBarData];
   }
 }

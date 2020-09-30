@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:bmi_diary/database/database.dart';
 import 'package:bmi_diary/database/models/bmi.dart';
 import 'package:bmi_diary/main.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
@@ -10,6 +11,8 @@ import 'package:stacked/stacked.dart';
 
 class CalculatorViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
+  final DatabaseManager _databaseManager = locator<DatabaseManager>();
+
   Rect rect;
   GlobalKey rectGetterKey = RectGetter.createGlobalKey();
 
@@ -29,6 +32,11 @@ class CalculatorViewModel extends BaseViewModel {
   void selectCMorFT(int i) {
     selectedCmOrFt = i;
     notifyListeners();
+  }
+
+  Future goToDiaryPage() async {
+    List<BMI> listBMIs = await _databaseManager.getBMIS();
+    _navigationService.navigateTo(DiaryViewRoute, arguments: listBMIs);
   }
 
   void selectKgorLbs(int i) {

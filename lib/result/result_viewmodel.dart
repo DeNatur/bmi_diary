@@ -27,6 +27,13 @@ class ResultViewModel extends BaseViewModel {
   }
 
   Future goToDiary() async {
+    if (bmi.id == null) {
+      DateTime now = DateTime.now();
+      bmi.time = now.millisecondsSinceEpoch;
+      bmi = await _databaseManager.insertBMI(bmi);
+    } else {
+      bmi = await _databaseManager.updateBMI(bmi);
+    }
     List<BMI> listBmis = await _databaseManager.getBMIS();
     _navigationService.navigateTo(DiaryViewRoute, arguments: listBmis);
   }
