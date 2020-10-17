@@ -78,7 +78,7 @@ class BMITile extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    "kg",
+                    kgOrLbs == BMI.UNIT_KG ? "kg" : "lbs",
                     style: TextStyle(
                         fontSize: 12,
                         color: Colors.white.withOpacity(0.5),

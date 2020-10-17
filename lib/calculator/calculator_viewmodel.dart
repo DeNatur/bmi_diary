@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bmi_diary/database/database.dart';
 import 'package:bmi_diary/database/models/bmi.dart';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/main.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
@@ -12,7 +13,7 @@ import 'package:stacked/stacked.dart';
 class CalculatorViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DatabaseManager _databaseManager = locator<DatabaseManager>();
-
+  final LocaleBase loc;
   Rect rect;
   GlobalKey rectGetterKey = RectGetter.createGlobalKey();
   List<BMI> listBMIs;
@@ -30,7 +31,7 @@ class CalculatorViewModel extends BaseViewModel {
   TextEditingController ageEditingController =
       TextEditingController(text: "18");
 
-  CalculatorViewModel({this.rectGetterKey}) {
+  CalculatorViewModel({this.rectGetterKey, this.loc}) {
     setBusy(true);
     _databaseManager.getBMIS().then((value) {
       listBMIs = value;

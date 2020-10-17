@@ -13,6 +13,7 @@ class BMIDao extends Dao<BMI> {
   final _columnResult = 'result';
   final _columnUnitWeight = 'unitWeight';
   final _columnUnitHeight = 'unitHeight';
+  final _columnFat = 'fat';
   @override
   String get createTableQuery =>
       "CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY,"
@@ -24,6 +25,7 @@ class BMIDao extends Dao<BMI> {
       " $_columnResult REAL,"
       " $_columnUnitWeight INTEGER,"
       " $_columnUnitHeight INTEGER,"
+      " $_columnFat REAL,"
       " $_columnAge INTEGER)";
 
   @override
@@ -47,6 +49,7 @@ class BMIDao extends Dao<BMI> {
         result: query[_columnResult],
         unitWeight: query[_columnUnitWeight],
         unitHeight: query[_columnUnitHeight],
+        fat: query[_columnFat],
         age: query[_columnAge]);
   }
 
@@ -62,6 +65,7 @@ class BMIDao extends Dao<BMI> {
       _columnResult: object.result,
       _columnUnitHeight: object.unitHeight,
       _columnUnitWeight: object.unitWeight,
+      _columnFat: object.fat,
       _columnAge: object.age
     };
   }

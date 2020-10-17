@@ -1,5 +1,6 @@
 import 'package:bmi_diary/database/database.dart';
 import 'package:bmi_diary/database/models/bmi.dart';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/main.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
@@ -9,12 +10,13 @@ class ResultViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DatabaseManager _databaseManager = locator<DatabaseManager>();
   BMI bmi;
+  final LocaleBase loc;
 
   void pop() {
     _navigationService.pop();
   }
 
-  ResultViewModel({this.bmi});
+  ResultViewModel({this.bmi, this.loc});
 
   Future saveBMI() async {
     if (bmi.id == null) {

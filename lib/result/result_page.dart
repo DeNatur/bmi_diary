@@ -1,4 +1,5 @@
 import 'package:bmi_diary/database/models/bmi.dart';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/result/result_viewmodel.dart';
 import 'package:bmi_diary/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,9 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ResultViewModel>.reactive(
-        viewModelBuilder: () =>
-            ResultViewModel(bmi: ModalRoute.of(context).settings.arguments),
+        viewModelBuilder: () => ResultViewModel(
+            bmi: ModalRoute.of(context).settings.arguments,
+            loc: Localizations.of<LocaleBase>(context, LocaleBase)),
         builder: (context, model, child) => Scaffold(
               backgroundColor: color_bg,
               appBar: NeumorphicAppBar(
@@ -59,7 +61,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 24)),
                     Text(
-                      " Result",
+                      " " + model.loc.result.result,
                       style:
                           TextStyle(fontWeight: FontWeight.w300, fontSize: 24),
                     )
@@ -73,7 +75,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                       ),
                       onPressed: () {
                         final snackBar = SnackBar(
-                          content: Text("Saved BMI",
+                          content: Text(model.loc.result.saved_bmi,
                               style: TextStyle(
                                 color: color_btn_able,
                               )),
@@ -110,49 +112,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                           child: Stack(
                             children: [
                               _buildBMIResultSection(model),
-                              FadeTransition(
-                                opacity: _opacityAnimation,
-                                child: Container(
-                                  height: 150,
-                                  alignment: Alignment.centerRight,
-                                  margin: EdgeInsets.only(right: 24),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 16,
-                                      ),
-                                      Neumorphic(
-                                        style: NeumorphicStyle(
-                                            boxShape:
-                                                NeumorphicBoxShape.circle(),
-                                            depth: 6,
-                                            color: Colors.grey[300]),
-                                        child: Container(
-                                          height: 52,
-                                          width: 52,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                              "${model.bmi.fat.toStringAsFixed(1)}%",
-                                              style: TextStyle(
-                                                  color: color_bg,
-                                                  fontWeight: FontWeight.w900)),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text("Fat",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16))
-                                    ],
-                                  ),
-                                ),
-                              )
+                              _buildFatSection(model)
                             ],
                           ),
                         ),
@@ -177,7 +137,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                                     _buildDesiredWeightSection(model),
                                   ],
                                 ),
-                                _buildBMITable(),
+                                _buildBMITable(model),
                               ],
                             ),
                           ),
@@ -189,6 +149,48 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                 ],
               ),
             ));
+  }
+
+  FadeTransition _buildFatSection(ResultViewModel model) {
+    return FadeTransition(
+      opacity: _opacityAnimation,
+      child: Container(
+        height: 150,
+        alignment: Alignment.centerRight,
+        margin: EdgeInsets.only(right: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Neumorphic(
+              style: NeumorphicStyle(
+                  boxShape: NeumorphicBoxShape.circle(),
+                  depth: 6,
+                  color: Colors.grey[300]),
+              child: Container(
+                height: 52,
+                width: 52,
+                alignment: Alignment.center,
+                child: Text("${model.bmi.fat.toStringAsFixed(1)}%",
+                    style: TextStyle(
+                        color: color_bg, fontWeight: FontWeight.w900)),
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text(model.loc.result.fat,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16))
+          ],
+        ),
+      ),
+    );
   }
 
   Column _buildCurrentWeightSection(ResultViewModel model) {
@@ -207,7 +209,8 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           height: 4,
         ),
         Text(
-          "Current weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          model.loc.result.current_weight +
+              ", ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
         ),
       ],
@@ -230,7 +233,8 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           height: 4,
         ),
         Text(
-          "Normal weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          model.loc.result.normal_weight +
+              ", ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
         ),
       ],
@@ -250,14 +254,15 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           height: 4,
         ),
         Text(
-          "Desired weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          model.loc.result.desired_weight +
+              ", ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
         ),
       ],
     );
   }
 
-  Column _buildBMITable() {
+  Column _buildBMITable(ResultViewModel model) {
     return Column(
       children: [
         SizedBox(
@@ -267,12 +272,15 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Very serious underweight",
+              model.loc.result.very_serious_underweight,
               style: TextStyle(fontSize: 12, color: color_very_serious),
             ),
-            Text(
-              "Under 16",
-              style: TextStyle(fontSize: 12),
+            Container(
+              width: 42,
+              child: Text(
+                "< 16",
+                style: TextStyle(fontSize: 12),
+              ),
             ),
           ],
         ),
@@ -283,7 +291,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Serious underweight",
+              model.loc.result.serious_underweight,
               style: TextStyle(fontSize: 12, color: color_serious),
             ),
             Text(
@@ -299,7 +307,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Underweight",
+              model.loc.result.underweight,
               style: TextStyle(fontSize: 12, color: color_wrong),
             ),
             Text(
@@ -315,7 +323,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Normal",
+              model.loc.result.normal,
               style: TextStyle(fontSize: 12, color: color_normal),
             ),
             Text(
@@ -331,7 +339,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Overweight",
+              model.loc.result.overweight,
               style: TextStyle(fontSize: 12, color: color_wrong),
             ),
             Text(
@@ -347,7 +355,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Obesity grade I",
+              model.loc.result.obesity1,
               style: TextStyle(fontSize: 12, color: color_serious),
             ),
             Text(
@@ -363,7 +371,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Obrsity grade II",
+              model.loc.result.obesity2,
               style: TextStyle(fontSize: 12, color: color_very_serious),
             ),
             Text(
@@ -401,7 +409,7 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
           alignment: Alignment.center,
           width: double.infinity,
           child: Text(
-            "DIARY",
+            model.loc.calculator.diary,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),

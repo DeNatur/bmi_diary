@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class BMI {
   static int MALE = 0;
-  static int FEMALE = 0;
+  static int FEMALE = 1;
 
   static const int VERY_SERIOUS_UNDERWEIGHT = 0;
   static const int SERIOUS_UNDERWEIGHT = 1;
@@ -13,6 +13,15 @@ class BMI {
   static const int OBESITY_I = 5;
   static const int OBESITY_II = 6;
 
+  static const int UNIT_KG = 0;
+  static const int UNIT_LBS = 1;
+
+  static const int UNIT_CM = 0;
+  static const int UNIT_FT = 1;
+
+  static const double KG_TO_LBS_CONST = 2.205;
+  static const double CM_TO_FT_CONST = 2.54;
+
   int id;
   int time;
   int gender;
@@ -20,6 +29,9 @@ class BMI {
   double weight;
   double goal;
   int age;
+  double fat;
+  int unitWeight = 0;
+  int unitHeight = 0;
   double result;
   int type;
   Color dangerousColor;
@@ -31,7 +43,10 @@ class BMI {
       this.weight,
       this.time,
       this.goal,
+      this.unitHeight,
+      this.unitWeight,
       this.age,
+      this.fat,
       this.result});
 
   static String calculateNormalLowerWeight(double height) {
@@ -91,5 +106,21 @@ class BMI {
 
   static double calculateBMI(double weight, double height) {
     return weight / ((height / 100) * (height / 100));
+  }
+
+  double calculateFat() {
+    int i = 1;
+    if (this.result > 100 || this.age < 1) {
+      return 0;
+    }
+    double f = (1.2 * this.result) + (0.23 * this.age);
+    if (this.gender != MALE) {
+      i = 0;
+    }
+    this.fat = (f - ((i) * 10.8)) - 5.4;
+    if (this.fat < 100.0 && this.fat >= 0) {
+      return this.fat;
+    }
+    return 0;
   }
 }

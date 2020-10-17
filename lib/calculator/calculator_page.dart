@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/utils/widgets/toggle_element.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:bmi_diary/calculator/calculator_viewmodel.dart';
@@ -16,13 +17,14 @@ class CalculatorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CalculatorViewModel>.reactive(
-        viewModelBuilder: () => CalculatorViewModel(),
+        viewModelBuilder: () => CalculatorViewModel(
+            loc: Localizations.of<LocaleBase>(context, LocaleBase)),
         builder: (context, model, child) => Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: color_bg,
               appBar: CalculatorAppBar(
-                title: "Calculator",
-                btnText: "DIARY",
+                title: model.loc.calculator.calculator,
+                btnText: model.loc.calculator.diary,
                 onPressed: model.goToDiaryPage,
               ),
               body: GestureDetector(
@@ -138,7 +140,7 @@ class CalculatorPage extends StatelessWidget {
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 42),
                 child: Text(
-                  "goal",
+                  model.loc.calculator.goal,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                 ))),
         Flexible(
@@ -163,7 +165,7 @@ class CalculatorPage extends StatelessWidget {
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 42),
                 child: Text(
-                  "age",
+                  model.loc.calculator.age,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                 ))),
         Flexible(
@@ -201,7 +203,7 @@ class CalculatorPage extends StatelessWidget {
           alignment: Alignment.center,
           width: double.infinity,
           child: Text(
-            "CALCULATE",
+            model.loc.calculator.calculate,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
@@ -243,7 +245,7 @@ class CalculatorPage extends StatelessWidget {
               onPressed: () {
                 model.selectGender(0);
               },
-              text: "Male",
+              text: model.loc.calculator.male,
               icon: FontAwesome.male,
               depth: model.selectedGenderIndex == 0 ? 6 : -20,
               btnColor: model.selectedGenderIndex == 0
@@ -259,7 +261,7 @@ class CalculatorPage extends StatelessWidget {
               onPressed: () {
                 model.selectGender(1);
               },
-              text: "Female",
+              text: model.loc.calculator.female,
               icon: FontAwesome.female,
               depth: model.selectedGenderIndex == 1 ? 6 : -20,
               btnColor: model.selectedGenderIndex == 1

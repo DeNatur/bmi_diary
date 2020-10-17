@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bmi_diary/database/database.dart';
 import 'package:bmi_diary/database/models/bmi.dart';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/services/navigation_service.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -22,6 +23,7 @@ class DiaryViewModel extends BaseViewModel {
   TimeType timeType = TimeType.Week;
   int selectedKgOrLbs = 0;
   List<BMI> bmiList;
+  final LocaleBase loc;
 
   void setKgOrLbs(int v) {
     this.selectedKgOrLbs = v;
@@ -54,6 +56,11 @@ class DiaryViewModel extends BaseViewModel {
     return bmiList.isNotEmpty ? bmiList.last.weight : 0;
   }
 
+  double getCurrentFat() {
+    log(bmiList.last.weight.toString());
+    return bmiList.isNotEmpty ? bmiList.last.fat : 0;
+  }
+
   String getCurrentWeightDiff() {
     double desiredWeight = getLastDesiredWeight();
     double currentWeight = getCurrentWeight();
@@ -61,16 +68,20 @@ class DiaryViewModel extends BaseViewModel {
     double diff = desiredWeight - currentWeight;
     if (diff > 0) {
       if (selectedKgOrLbs == BMI.UNIT_KG)
-        return "+ ${diff.toStringAsPrecision(3)} kg remain";
+        return "+ ${diff.toStringAsPrecision(3)} kg " + loc.diary.remain;
       else
-        return "+ ${(diff * BMI.KG_TO_LBS_CONST).toStringAsPrecision(3)} lbs remain";
+        return "+ ${(diff * BMI.KG_TO_LBS_CONST).toStringAsPrecision(3)} lbs " +
+            loc.diary.remain;
     } else if (diff < 0) {
       if (selectedKgOrLbs == BMI.UNIT_KG)
-        return "+ ${(diff * -1).toStringAsPrecision(3)} kg remain";
+        return "+ ${(diff * -1).toStringAsPrecision(3)} kg " + loc.diary.remain;
       else
-        return "+ ${(diff * -1 * BMI.KG_TO_LBS_CONST).toStringAsPrecision(3)} lbs remain";
-    } else
-      return "Goal reached!";
+        return "+ ${(diff * -1 * BMI.KG_TO_LBS_CONST).toStringAsPrecision(3)} lbs " +
+            loc.diary.remain;
+    } else {
+      if (bmiList.isEmpty) return "";
+      return loc.diary.goal_reached;
+    }
   }
 
   String getFormattedValue(int value) {
@@ -176,7 +187,7 @@ class DiaryViewModel extends BaseViewModel {
     return listOfWeightBatData;
   }
 
-  DiaryViewModel({this.bmiList}) {
+  DiaryViewModel({this.bmiList, this.loc}) {
     bmiList.sort((a, b) => b.time.compareTo(a.time));
   }
 

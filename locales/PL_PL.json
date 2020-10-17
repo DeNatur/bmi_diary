@@ -14,6 +14,30 @@
     "current_weight": "Obecna waga",
     "normal_weight": "Właściwa waga",
     "desired_weight": "Pożądana waga",
-    "very_serious_underweight": "Bardzo poważna niedowaga"
+    "very_serious_underweight": "Bardzo poważna niedowaga",
+    "serious_underweight": "Poważna niedowaga",
+    "underweight": "Niedowaga",
+    "normal": "Normalne",
+    "overweight": "Nadwaga",
+    "obesity1": "Otyłość I stopnia",
+    "obesity2": "Otyłość II stopnia",
+    "fat": "Tłuszcz",
+    "saved_bmi": "Zapisano BMI"
+  },
+  "diary": {
+    "diary": "Dziennik",
+    "week": "Tydzień",
+    "month": "Miesiąc",
+    "year": "Rok",
+    "weight": "Waga",
+    "desired_weight": "Waga pożądana",
+    "goal": "Cel",
+    "current_weight": "Aktualna\nWaga",
+    "remain": "zostało",
+    "fat": "Tłuszcz",
+    "dialog_delete_content": "Czy na pewno chcesz usunąć ten wynik?",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "goal_reached": "Cel osiągnięty!"
   }
 }

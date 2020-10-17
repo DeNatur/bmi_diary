@@ -14,6 +14,30 @@
     "current_weight": "",
     "normal_weight": "",
     "desired_weight": "",
-    "very_serious_underweight": ""
+    "very_serious_underweight": "",
+    "serious_underweight": "",
+    "underweight": "",
+    "normal": "",
+    "overweight": "",
+    "obesity1": "",
+    "obesity2": "",
+    "fat": "",
+    "saved_bmi": ""
+  },
+  "diary": {
+    "diary": "",
+    "week": "",
+    "month": "",
+    "year": "",
+    "weight": "",
+    "desired_weight": "",
+    "goal": "",
+    "current_weight": "",
+    "remain": "",
+    "fat": "",
+    "dialog_delete_content": "",
+    "cancel": "",
+    "delete": "",
+    "goal_reached": ""
   }
 }

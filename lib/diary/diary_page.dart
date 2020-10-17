@@ -1,5 +1,6 @@
 import 'package:bmi_diary/database/models/bmi.dart';
 import 'package:bmi_diary/diary/diary_viewmodel.dart';
+import 'package:bmi_diary/generated/locale_base.dart';
 import 'package:bmi_diary/utils/constants/colors.dart';
 import 'package:bmi_diary/utils/widgets/bmi_tile.dart';
 import 'package:bmi_diary/utils/widgets/toggle_element.dart';
@@ -13,8 +14,9 @@ class DiaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DiaryViewModel>.reactive(
-        viewModelBuilder: () =>
-            DiaryViewModel(bmiList: ModalRoute.of(context).settings.arguments),
+        viewModelBuilder: () => DiaryViewModel(
+            bmiList: ModalRoute.of(context).settings.arguments,
+            loc: Localizations.of<LocaleBase>(context, LocaleBase)),
         builder: (context, model, child) => Scaffold(
               appBar: NeumorphicAppBar(
                 title: Row(
@@ -25,7 +27,7 @@ class DiaryPage extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 24)),
                     Text(
-                      " Diary",
+                      " " + model.loc.diary.diary,
                       style:
                           TextStyle(fontWeight: FontWeight.w300, fontSize: 24),
                     )
@@ -124,20 +126,20 @@ class DiaryPage extends StatelessWidget {
       children: [
         Flexible(
             flex: 1,
-            child:
-                _getTimeTypeTile("Week", model.timeType != TimeType.Week, () {
+            child: _getTimeTypeTile(
+                model.loc.diary.week, model.timeType != TimeType.Week, () {
               model.setTimeTipe(TimeType.Week);
             })),
         Flexible(
             flex: 1,
-            child:
-                _getTimeTypeTile("Month", model.timeType != TimeType.Month, () {
+            child: _getTimeTypeTile(
+                model.loc.diary.month, model.timeType != TimeType.Month, () {
               model.setTimeTipe(TimeType.Month);
             })),
         Flexible(
             flex: 1,
-            child:
-                _getTimeTypeTile("Year", model.timeType != TimeType.Year, () {
+            child: _getTimeTypeTile(
+                model.loc.diary.year, model.timeType != TimeType.Year, () {
               model.setTimeTipe(TimeType.Year);
             })),
       ],
@@ -152,7 +154,7 @@ class DiaryPage extends StatelessWidget {
           backgroundColor: Colors.grey[200],
           insetPadding: EdgeInsets.all(16),
           title: Text(
-            "Are you sure you want to delete this data?",
+            model.loc.diary.dialog_delete_content,
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
@@ -167,7 +169,7 @@ class DiaryPage extends StatelessWidget {
                   model.notifyListeners();
                 },
                 child: Text(
-                  "Cancel",
+                  model.loc.diary.cancel,
                   style: TextStyle(
                       color: Colors.black38, fontWeight: FontWeight.w300),
                 ),
@@ -181,7 +183,7 @@ class DiaryPage extends StatelessWidget {
                   Navigator.of(context).pop(false);
                 },
                 child: Text(
-                  "Delete",
+                  model.loc.diary.delete,
                   style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,
@@ -250,7 +252,7 @@ class DiaryPage extends StatelessWidget {
                 children: [
                   Padding(
                       padding: const EdgeInsets.only(top: 24, left: 16),
-                      child: Text("Current\nWeight",
+                      child: Text(model.loc.diary.current_weight,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
@@ -259,6 +261,9 @@ class DiaryPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: 16,
+                      ),
                       Center(
                         child: Text(
                             model.selectedKgOrLbs == BMI.UNIT_KG
@@ -276,6 +281,16 @@ class DiaryPage extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.5),
                               fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                      Center(
+                        child: Text(
+                            model.loc.diary.fat +
+                                ": ${model.getCurrentFat().toStringAsFixed(1)}%",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             )),
                       ),
@@ -351,7 +366,7 @@ class DiaryPage extends StatelessWidget {
                 children: [
                   Padding(
                       padding: const EdgeInsets.only(top: 24, left: 16),
-                      child: Text("Goal",
+                      child: Text(model.loc.diary.goal,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
@@ -417,7 +432,7 @@ class DiaryPage extends StatelessWidget {
                               color: color_normal),
                         ),
                         Text(
-                          "Weight",
+                          model.loc.diary.weight,
                           style:
                               TextStyle(color: color_txt_disable, fontSize: 12),
                         )
@@ -437,7 +452,7 @@ class DiaryPage extends StatelessWidget {
                               color: color_orange),
                         ),
                         Text(
-                          "Desired weight",
+                          model.loc.diary.desired_weight,
                           style:
                               TextStyle(color: color_txt_disable, fontSize: 12),
                         )
@@ -525,7 +540,7 @@ class DiaryPage extends StatelessWidget {
                 return value.toInt().toString() + " kg";
               }
             } else {
-              if (value.toInt() % 20 == 0) {
+              if (value.toInt() % 30 == 0) {
                 return value.toInt().toString() + " lb";
               }
             }

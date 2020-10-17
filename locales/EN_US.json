@@ -14,6 +14,30 @@
     "current_weight": "Current weight",
     "normal_weight": "Normal weight",
     "desired_weight": "Desired weight",
-    "very_serious_underweight": "Very serious underweight"
+    "very_serious_underweight": "Very serious underweight",
+    "serious_underweight": "Serious underweight",
+    "underweight": "Underweight",
+    "normal": "Normal",
+    "overweight": "Overweight",
+    "obesity1": "Obesity grade I",
+    "obesity2": "Obesity grade II",
+    "fat": "Fat",
+    "saved_bmi": "Saved BMI"
+  },
+  "diary": {
+    "diary": "Diary",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "weight": "Weight",
+    "desired_weight": "Desired weight",
+    "goal": "Goal",
+    "current_weight": "Current\nWeight",
+    "remain": "remain",
+    "fat": "Fat",
+    "dialog_delete_content": "Are you sure you want to delete this data?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "goal_reached": "Goal reached!"
   }
 }
