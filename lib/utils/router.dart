@@ -1,3 +1,4 @@
+import 'package:bmi_diary/calculator/calculator_page.dart';
 import 'package:bmi_diary/diary/diary_page.dart';
 import 'package:bmi_diary/result/result_page.dart';
 import 'package:bmi_diary/utils/constants/route_names.dart';
@@ -5,6 +6,11 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case CalculatorViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: CalculatorPage(),
+      );
     case ResultViewRoute:
       return _getPageRouteWithArgs(
           routeName: settings.name,

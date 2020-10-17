@@ -1,3 +1,19 @@
 {
-  "main": {}
+  "main": {},
+  "calculator": {
+    "male": "",
+    "female": "",
+    "calculator": "",
+    "diary": "",
+    "goal": "",
+    "age": "",
+    "calculate": ""
+  },
+  "result": {
+    "result": "",
+    "current_weight": "",
+    "normal_weight": "",
+    "desired_weight": "",
+    "very_serious_underweight": ""
+  }
 }

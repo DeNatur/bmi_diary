@@ -26,6 +26,24 @@ class ResultViewModel extends BaseViewModel {
     }
   }
 
+  double getCurrentWeight() {
+    return bmi.unitWeight == BMI.UNIT_KG
+        ? bmi.weight
+        : bmi.weight * BMI.KG_TO_LBS_CONST;
+  }
+
+  double getGoalWeight() {
+    return bmi.unitWeight == BMI.UNIT_KG
+        ? bmi.goal
+        : bmi.goal * BMI.KG_TO_LBS_CONST;
+  }
+
+  String getFormattedNormalWeight() {
+    return bmi.unitWeight == BMI.UNIT_KG
+        ? "${BMI.calculateNormalLowerWeight(bmi.height)}-${BMI.calculateNormalUpperWeight(bmi.height)}"
+        : "${(double.parse(BMI.calculateNormalLowerWeight(bmi.height)) * BMI.KG_TO_LBS_CONST).toStringAsFixed(1)}-${(double.parse(BMI.calculateNormalUpperWeight(bmi.height)) * BMI.KG_TO_LBS_CONST).toStringAsFixed(1)}";
+  }
+
   Future goToDiary() async {
     if (bmi.id == null) {
       DateTime now = DateTime.now();

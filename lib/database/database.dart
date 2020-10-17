@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bmi_diary/database/models/dao/bmi_dao.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,6 +44,7 @@ class DatabaseManager {
   Future<List<BMI>> getBMIS() async {
     final db = await databaseProvider.db();
     List<Map> maps = await db.query(bmiDao.tableName);
+    log(maps.toString());
     return bmiDao.fromList(maps);
   }
 }

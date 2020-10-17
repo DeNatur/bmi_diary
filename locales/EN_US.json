@@ -1,3 +1,19 @@
 {
-  "main": {}
+  "main": {},
+  "calculator": {
+    "male": "Male",
+    "female": "Female",
+    "calculator": "Calculator",
+    "diary": "DIARY",
+    "goal": "goal",
+    "age": "age",
+    "calculate": "CALCULATE"
+  },
+  "result": {
+    "result": "Result",
+    "current_weight": "Current weight",
+    "normal_weight": "Normal weight",
+    "desired_weight": "Desired weight",
+    "very_serious_underweight": "Very serious underweight"
+  }
 }

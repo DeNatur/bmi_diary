@@ -14,7 +14,9 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
   AnimationController _animationController;
+  AnimationController _opacityController;
   Animation<double> _animation;
+  Animation<double> _opacityAnimation;
   var _animationTime = 2000;
 
   @override
@@ -29,7 +31,16 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
     _animation = Tween<double>(begin: pi, end: 4 * pi).animate(
         new CurvedAnimation(
             parent: _animationController, curve: Curves.bounceOut));
+
+    _opacityController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _animationTime));
+
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+        new CurvedAnimation(
+            parent: _opacityController, curve: Curves.fastOutSlowIn));
+
     _animationController.forward();
+    _opacityController.forward();
   }
 
   @override
@@ -87,308 +98,369 @@ class _ResultPageState extends State<ResultPage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              body: Stack(
                 children: [
-                  Container(
-                    alignment: Alignment.topCenter,
-                    child: Stack(
+                  SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Stack(
-                          children: [
-                            Transform.rotate(
-                              angle: _animation.value,
-                              child: Container(
-                                alignment: Alignment.topCenter,
-                                child: Neumorphic(
-                                  style: NeumorphicStyle(
-                                      shape: NeumorphicShape.convex,
-                                      boxShape: NeumorphicBoxShape.circle()),
-                                  child: Container(
-                                    height: 150,
-                                    width: 150,
-                                    child: Column(
-                                      children: [
-                                        Flexible(
-                                            flex: 1,
-                                            child: Container(
-                                              color: model.bmi.dangerousColor
-                                                  .withOpacity(0.8),
-                                            )),
-                                        Flexible(
-                                            flex: 1,
-                                            child: Container(
-                                              color: model.bmi.dangerousColor
-                                                  .withOpacity(0.4),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 16),
-                              alignment: Alignment.topCenter,
-                              child: Neumorphic(
-                                style: NeumorphicStyle(
-                                    depth: -20,
-                                    boxShape: NeumorphicBoxShape.circle()),
+                        Container(
+                          alignment: Alignment.topCenter,
+                          child: Stack(
+                            children: [
+                              _buildBMIResultSection(model),
+                              FadeTransition(
+                                opacity: _opacityAnimation,
                                 child: Container(
-                                  height: 120,
-                                  width: 120,
-                                  alignment: Alignment.center,
-                                  child: NeumorphicText(
-                                    model.bmi.result.toStringAsFixed(1),
-                                    textStyle: NeumorphicTextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold),
-                                    style: NeumorphicStyle(color: Colors.white),
+                                  height: 150,
+                                  alignment: Alignment.centerRight,
+                                  margin: EdgeInsets.only(right: 24),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      Neumorphic(
+                                        style: NeumorphicStyle(
+                                            boxShape:
+                                                NeumorphicBoxShape.circle(),
+                                            depth: 6,
+                                            color: Colors.grey[300]),
+                                        child: Container(
+                                          height: 52,
+                                          width: 52,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              "${model.bmi.fat.toStringAsFixed(1)}%",
+                                              style: TextStyle(
+                                                  color: color_bg,
+                                                  fontWeight: FontWeight.w900)),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text("Fat",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16))
+                                    ],
                                   ),
                                 ),
-                              ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Neumorphic(
+                          margin: EdgeInsets.only(top: 42, left: 16, right: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    _buildCurrentWeightSection(model),
+                                    _buildNormalWeightSection(model),
+                                    _buildDesiredWeightSection(model),
+                                  ],
+                                ),
+                                _buildBMITable(),
+                              ],
                             ),
-                          ],
-                        )
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  Neumorphic(
-                    margin: EdgeInsets.only(top: 32, left: 16, right: 16),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    model.bmi.weight.toStringAsFixed(1),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: model.bmi.dangerousColor),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    "Current weight, kg",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${BMI.calculateNormalLowerWeight(model.bmi.height)}-${BMI.calculateNormalUpperWeight(model.bmi.height)}",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.purple[200]),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    "Normal weight, kg",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    model.bmi.goal.toStringAsFixed(1),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    "Desired weight, kg",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Very serious underweight",
-                                style: TextStyle(
-                                    fontSize: 12, color: color_very_serious),
-                              ),
-                              Text(
-                                "Under 16",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Serious underweight",
-                                style: TextStyle(
-                                    fontSize: 12, color: color_serious),
-                              ),
-                              Text(
-                                "16.0 - 16.9",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Underweight",
-                                style:
-                                    TextStyle(fontSize: 12, color: color_wrong),
-                              ),
-                              Text(
-                                "17.0 - 18.4",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Normal",
-                                style: TextStyle(
-                                    fontSize: 12, color: color_normal),
-                              ),
-                              Text(
-                                "18.5 - 24.9",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Overweight",
-                                style:
-                                    TextStyle(fontSize: 12, color: color_wrong),
-                              ),
-                              Text(
-                                "25.0 - 29.9",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Obesity grade I",
-                                style: TextStyle(
-                                    fontSize: 12, color: color_serious),
-                              ),
-                              Text(
-                                "30.0 - 34.9",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Obrsity grade II",
-                                style: TextStyle(
-                                    fontSize: 12, color: color_very_serious),
-                              ),
-                              Text(
-                                "35.0 - 39.9",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  NeumorphicButton(
-                    onPressed: () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                      model.goToDiary();
-                    },
-                    margin: EdgeInsets.only(left: 16, right: 16, bottom: 62),
-                    style: NeumorphicStyle(
-                        color: color_orange,
-                        depth: 6,
-                        intensity: 0.3,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(12))),
-                    child: Container(
-                      height: 24,
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      child: Text(
-                        "DIARY",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ),
-                  )
+                  _buldDiaryButton(context, model)
                 ],
               ),
             ));
+  }
+
+  Column _buildCurrentWeightSection(ResultViewModel model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          model.getCurrentWeight().toStringAsFixed(1),
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: model.bmi.dangerousColor),
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Text(
+          "Current weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
+  Column _buildNormalWeightSection(ResultViewModel model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          model.getFormattedNormalWeight(),
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple[200]),
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Text(
+          "Normal weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
+  Column _buildDesiredWeightSection(ResultViewModel model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          model.getGoalWeight().toStringAsFixed(1),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Text(
+          "Desired weight, ${model.bmi.unitWeight == BMI.UNIT_KG ? "kg" : "lbs"}",
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
+  Column _buildBMITable() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Very serious underweight",
+              style: TextStyle(fontSize: 12, color: color_very_serious),
+            ),
+            Text(
+              "Under 16",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Serious underweight",
+              style: TextStyle(fontSize: 12, color: color_serious),
+            ),
+            Text(
+              "16.0 - 16.9",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Underweight",
+              style: TextStyle(fontSize: 12, color: color_wrong),
+            ),
+            Text(
+              "17.0 - 18.4",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Normal",
+              style: TextStyle(fontSize: 12, color: color_normal),
+            ),
+            Text(
+              "18.5 - 24.9",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Overweight",
+              style: TextStyle(fontSize: 12, color: color_wrong),
+            ),
+            Text(
+              "25.0 - 29.9",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Obesity grade I",
+              style: TextStyle(fontSize: 12, color: color_serious),
+            ),
+            Text(
+              "30.0 - 34.9",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Obrsity grade II",
+              style: TextStyle(fontSize: 12, color: color_very_serious),
+            ),
+            Text(
+              "35.0 - 39.9",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 32,
+        ),
+      ],
+    );
+  }
+
+  Widget _buldDiaryButton(BuildContext context, ResultViewModel model) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      child: NeumorphicButton(
+        onPressed: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+          model.goToDiary();
+        },
+        margin: EdgeInsets.only(left: 16, right: 16, bottom: 62),
+        style: NeumorphicStyle(
+            color: color_orange,
+            depth: 6,
+            intensity: 0.3,
+            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12))),
+        child: Container(
+          height: 24,
+          alignment: Alignment.center,
+          width: double.infinity,
+          child: Text(
+            "DIARY",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBMIResultSection(ResultViewModel model) {
+    return Stack(
+      children: [
+        Transform.rotate(
+          angle: _animation.value,
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: Neumorphic(
+              style: NeumorphicStyle(
+                  shape: NeumorphicShape.convex,
+                  boxShape: NeumorphicBoxShape.circle()),
+              child: Container(
+                height: 150,
+                width: 150,
+                child: Column(
+                  children: [
+                    Flexible(
+                        flex: 1,
+                        child: Container(
+                          color: model.bmi.dangerousColor.withOpacity(0.8),
+                        )),
+                    Flexible(
+                        flex: 1,
+                        child: Container(
+                          color: model.bmi.dangerousColor.withOpacity(0.4),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          alignment: Alignment.topCenter,
+          child: Neumorphic(
+            style: NeumorphicStyle(
+                depth: -20, boxShape: NeumorphicBoxShape.circle()),
+            child: Container(
+              height: 120,
+              width: 120,
+              alignment: Alignment.center,
+              child: NeumorphicText(
+                model.bmi.result.toStringAsFixed(1),
+                textStyle: NeumorphicTextStyle(
+                    fontSize: 32, fontWeight: FontWeight.bold),
+                style: NeumorphicStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
