@@ -12,13 +12,14 @@ Mobile Application made in Flutter for calculating BMI
 - Calculating the percentage of fat in the body,
 - Weight chart in scales - week, month, year,
 - Conversion to imperial units
+- Support for two languages(Polish and English)
 
 ## Goals of the project
 
 - Getting familiar with Flutter,
 - Test the capabilities for creating mobile applicaiton in neumorphic style,
 - Learn how to implement MVVM in Flutter, MVVM is made by using Provider,
-- Learn how to implement SQLLite database in Flutter(in project SQFLite),
+- Learn how to implement SQLite database in Flutter(in project sqflite),
 - Learn how to implement AdMob in Flutter
 
 
