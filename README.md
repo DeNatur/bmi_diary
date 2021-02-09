@@ -19,6 +19,7 @@ Mobile Application made in Flutter for calculating BMI
 - Test the capabilities for creating mobile applicaiton in neumorphic style,
 - Learn how to implement MVVM in Flutter, MVVM is made by using Provider,
 - Learn how to implement SQLLite database in Flutter(in project SQFLite),
+- Learn how to implement AdMob in Flutter
 
 
 ## License
