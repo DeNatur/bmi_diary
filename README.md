@@ -1,16 +1,29 @@
-# bmi_diary
+# BMI Diary
 
-A new Flutter project.
+Mobile Application made in Flutter for calculating BMI
 
-## Getting Started
+![](https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658)
+![](https://play-lh.googleusercontent.com/tcew5iE9VsqgCQv54JGiKxQDQkFsnxbVX-MqNXIb_j4ANi-WFw3GH0CH68PTVG8RTfXH=w1165-h658)
+![](https://play-lh.googleusercontent.com/s57q1hWutgPgHYsU4MjsWY_fYIdf4SLTIzPhBwE1beXXor4omyPjP0mPcItdLsT7lWg=w1423-h808)
+![](https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Functions of the application
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Evaluation of the status of your current weight,
+- Calculating the percentage of fat in the body,
+- Weight chart in scales - week, month, year,
+- Conversion to imperial units
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Goals of the project
+
+- Getting familiar with Flutter,
+- Test the capabilities for creating mobile applicaiton in neumorphic style,
+- Learn how to implement MVVM in Flutter, MVVM is made by using Provider,
+- Learn how to implement SQLLite database in Flutter(in project SQFLite),
+
+
+## License
+Apache 2.0
+
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.szymonstasik.bmi_diary)
