@@ -2,13 +2,11 @@
 
 Mobile Application made in Flutter for calculating BMI
 
-![](https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658)
-![](https://play-lh.googleusercontent.com/tcew5iE9VsqgCQv54JGiKxQDQkFsnxbVX-MqNXIb_j4ANi-WFw3GH0CH68PTVG8RTfXH=w1165-h658)
-![](https://play-lh.googleusercontent.com/s57q1hWutgPgHYsU4MjsWY_fYIdf4SLTIzPhBwE1beXXor4omyPjP0mPcItdLsT7lWg=w1423-h808)
-![](https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658)
+
+<img src="https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658" width="200"> <img src="https://play-lh.googleusercontent.com/tcew5iE9VsqgCQv54JGiKxQDQkFsnxbVX-MqNXIb_j4ANi-WFw3GH0CH68PTVG8RTfXH=w1165-h658" width="200"> <img src="https://play-lh.googleusercontent.com/s57q1hWutgPgHYsU4MjsWY_fYIdf4SLTIzPhBwE1beXXor4omyPjP0mPcItdLsT7lWg=w1423-h808" width="200"> <img src="https://play-lh.googleusercontent.com/Q2fBIktUd5lSkNYlQjvGZhvr5Jb23VKMuov5kw4MTR_P8jIpT4ApTXi8-gaFIrPYCkJh=w1165-h658" width="200">
 
 
-## Functions of the application
+## Features of the application
 
 - Evaluation of the status of your current weight,
 - Calculating the percentage of fat in the body,
